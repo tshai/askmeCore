@@ -1,0 +1,16 @@
+﻿1>------ Publish started: Project: SignalRChat, Configuration: Debug Any CPU ------
+Connecting to E:\wwwroot\chat\SignalRChat\SignalRChat\bin\Debug\netcoreapp2.2\publish...
+E:\wwwroot\chat\SignalRChat\SignalRChat\SignalRChat.csproj(0,0): Warning NU1701: Package 'Microsoft.AspNet.Cors 5.2.7' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.2'. This package may not be fully compatible with your project.
+E:\wwwroot\chat\SignalRChat\SignalRChat\SignalRChat.csproj(0,0): Warning NU1701: Package 'Microsoft.AspNet.WebApi.Core 5.2.7' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.2'. This package may not be fully compatible with your project.
+E:\wwwroot\chat\SignalRChat\SignalRChat\SignalRChat.csproj(0,0): Warning NU1701: Package 'Microsoft.AspNet.WebApi.Cors 5.2.7' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.2'. This package may not be fully compatible with your project.
+Restore completed in 58.33 ms for E:\wwwroot\chat\SignalRChat\SignalRChat\SignalRChat.csproj.
+E:\wwwroot\chat\SignalRChat\SignalRChat\SignalRChat.csproj(0,0): Warning NU1701: Package 'Microsoft.AspNet.Cors 5.2.7' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.2'. This package may not be fully compatible with your project.
+E:\wwwroot\chat\SignalRChat\SignalRChat\SignalRChat.csproj(0,0): Warning NU1701: Package 'Microsoft.AspNet.WebApi.Core 5.2.7' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.2'. This package may not be fully compatible with your project.
+E:\wwwroot\chat\SignalRChat\SignalRChat\SignalRChat.csproj(0,0): Warning NU1701: Package 'Microsoft.AspNet.WebApi.Cors 5.2.7' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.2'. This package may not be fully compatible with your project.
+SignalRChat -> E:\wwwroot\chat\SignalRChat\SignalRChat\bin\Debug\netcoreapp2.2\win-x64\SignalRChat.dll
+SignalRChat -> E:\wwwroot\chat\SignalRChat\SignalRChat\bin\Debug\netcoreapp2.2\win-x64\SignalRChat.Views.dll
+SignalRChat -> E:\wwwroot\chat\SignalRChat\SignalRChat\obj\Debug\netcoreapp2.2\win-x64\PubTmp\Out\
+Web App was published successfully file:///E:/wwwroot/chat/SignalRChat/SignalRChat/bin/Debug/netcoreapp2.2/publish
+
+========== Build: 0 succeeded, 0 failed, 1 up-to-date, 0 skipped ==========
+========== Publish: 1 succeeded, 0 failed, 0 skipped ==========

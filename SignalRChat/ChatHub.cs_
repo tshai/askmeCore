@@ -1,0 +1,291 @@
+﻿using System;
+using System.Web;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.SignalR;
+using SignalRChat.Models;
+using System.Threading.Tasks;
+using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
+
+namespace SignalRChat.Hubs
+{
+    public class ChatHub : Hub
+    {
+        
+        public static List<member> MemebersList = new List<member>();
+
+        public void initialize(string RndNumber, string customerID, string supplierID, string whoSend, string gid, string guid)
+        {
+
+            errors.WriteErrorLogtmp(guid.ToString(), 1);
+            member member_ = TestWebSocketHandlerMemeberProperties(RndNumber, customerID, supplierID, whoSend, gid, guid);
+            member_.memberID = Context.ConnectionId;
+            models models_ = populateClassFromDB.getNewModels(member_.supplierID);
+            if (member_.whoSend == "749")
+            {
+                if (models_.MainModels_.MainModelGuid.ToString() != member_.gid.ToString())
+                {
+                    populateClassFromDB.addWindowsServiceLogs(new WindowsServiceLogs { DateIn = DateTime.Now, GirlNum = member_.supplierID, RndNumber = member_.RndNumber.ToString(), UserNum = member_.customerID, EventDesc = "supplier wrong guid" + member_.supplierID, IsError = 1 });
+                    return;
+                }
+                Class1.updatelastvisit(member_.supplierID);
+            }
+            errors.WriteErrorLogtmp(member_.whoSend, 1);
+            if (Validation_.CheckifValidClient(models_.NewModels_, member_) == 1)
+            {
+
+                populateClassFromDB.addWindowsServiceLogs(new WindowsServiceLogs { DateIn = DateTime.Now, GirlNum = member_.supplierID, RndNumber = member_.RndNumber.ToString(), UserNum = member_.customerID, EventDesc = "supplier Online was not 1 from initialize" + member_.supplierID, IsError = 1 });
+                Clients.Client(Context.ConnectionId).SendAsync("sendMessage", "updateStatus743=1");
+                return;
+            };
+            MemebersList = Class2.addTomemberList(member_, MemebersList);
+            if (member_.whoSend == "0")
+            {
+                Class1.updateUlastvisit(member_.supplierID, member_.customerID);
+                //Clients.All.broadcastMessage("new chat");
+                Clients.Client(Class2.getOtherMember(member_, MemebersList).memberID).SendAsync("sendMessage", "newUser98541");
+                Clients.Client(Class2.getOtherMember(member_, MemebersList).memberID).SendAsync("sendMessage", "new chat");
+            }
+        }
+        Validation Validation_ = new Validation();
+        supplierAutoUpdate supplierAutoUpdate_ = new supplierAutoUpdate();
+        public void login(string message,string RndNumber, string customerID, string supplierID, string whoSend, string gid, string guid)
+        {
+            try
+            {
+                member streamData_ = TestWebSocketHandlerMemeberProperties(RndNumber, customerID, supplierID, whoSend, gid, guid);
+            }
+            catch(Exception ex)
+            {
+                errors.WriteErrorLogtmp(ex.StackTrace, 1);
+                
+            }
+            errors.WriteErrorLogtmp("login2", 1);
+            Clients.Client(Context.ConnectionId).SendAsync("sendMessage", message);
+            errors.WriteErrorLogtmp("login3", 1);
+
+        }
+
+        public void closeMedia(string message, string RndNumber, string customerID, string supplierID, string whoSend, string gid, string guid)
+        {
+            errors.WriteErrorLogtmp("login", 1);
+            member streamData_ = TestWebSocketHandlerMemeberProperties(RndNumber, customerID, supplierID, whoSend, gid, guid);
+            Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).SendAsync("sendMessage", message);
+        }
+        public void cOVAC(string message, string RndNumber, string customerID, string supplierID, string whoSend, string gid, string guid)//customerOpenVideoAndCam
+        {
+            errors.WriteErrorLogtmp("cOVAC", 1);
+            member streamData_ = TestWebSocketHandlerMemeberProperties(RndNumber, customerID, supplierID, whoSend, gid, guid);
+            //streamData_.memberID = Context.ConnectionId;
+            Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).SendAsync("sendMessage", message);
+            //Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).newMessage(message);
+        }
+        public void supplierAcceptChat(string message, string RndNumber, string customerID, string supplierID, string whoSend, string gid, string guid)
+        {
+            try
+            {
+                member streamData_ = TestWebSocketHandlerMemeberProperties(RndNumber, customerID, supplierID, whoSend, gid, guid);
+                //streamData_.memberID = Context.ConnectionId;
+                errors.WriteErrorLogtmp("supplierAcceptChat" + Class2.getOtherMember(streamData_, MemebersList).guid, 1);
+                //Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).newMessage(message);
+                Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).SendAsync("sendMessage", message);
+            }
+            catch (Exception ex)
+            {
+                errors.WriteErrorLogtmp(ex.StackTrace, 1);
+            }
+        }
+        public void userDontWantToWaitForSupplier(string message, string RndNumber, string customerID, string supplierID, string whoSend, string gid, string guid)
+        {
+            try
+            {
+                member streamData_ = TestWebSocketHandlerMemeberProperties(RndNumber, customerID, supplierID, whoSend, gid, guid);
+                //streamData_.memberID = Context.ConnectionId;
+                errors.WriteErrorLogtmp("userDontWantToWaitForSupplier" + Class2.getOtherMember(streamData_, MemebersList).guid, 1);
+                //Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).newMessage(message);
+                Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).SendAsync("sendMessage", message);
+
+            }
+            catch (Exception ex)
+            {
+                errors.WriteErrorLogtmp(ex.StackTrace, 1);
+            }
+
+        }
+
+
+
+        public void Send(string message, string RndNumber, string customerID, string supplierID, string whoSend, string gid, string guid)
+        {
+
+            member member_ = TestWebSocketHandlerMemeberProperties(RndNumber, customerID, supplierID, whoSend, gid, guid);
+            member_.memberID = Context.ConnectionId;
+            //populateClassFromDB.addWindowsServiceLogs(new WindowsServiceLogs { DateIn = DateTime.Now, GirlNum = member_.supplierID, RndNumber = member_.RndNumber.ToString(), UserNum = member_.customerID, EventDesc = "supplier Online was not 1 from TestWebSocketHandler 55 disconnectChat17" + member_.memberID, IsError = 1 });
+            models models_ = populateClassFromDB.getNewModels(member_.supplierID);
+            if (member_.whoSend == "749")
+            {
+                if (models_.MainModels_.MainModelGuid.ToString() != member_.gid.ToString())
+                {
+                    populateClassFromDB.addWindowsServiceLogs(new WindowsServiceLogs { DateIn = DateTime.Now, GirlNum = member_.supplierID, RndNumber = member_.RndNumber.ToString(), UserNum = member_.customerID, EventDesc = "supplier wrong guid" + member_.supplierID, IsError = 1 });
+                    return;
+                    //HttpContext.Current.Response.End();
+                }
+                Class1.updatelastvisit(member_.supplierID);
+            }
+            if (Validation_.CheckifValidClient(models_.NewModels_, member_) == 1)
+            {
+                populateClassFromDB.addWindowsServiceLogs(new WindowsServiceLogs { DateIn = DateTime.Now, GirlNum = member_.supplierID, RndNumber = member_.RndNumber.ToString(), UserNum = member_.customerID, EventDesc = "supplier Online was not 1 from TestWebSocketHandler 44 disconnectChat17" + member_.supplierID, IsError = 1 });
+                //Clients.Client(Context.ConnectionId).newMessage("disconnectChat17");
+                Clients.Client(Context.ConnectionId).SendAsync("sendMessage", "disconnectChat17");
+                //HttpContext.Current.Response.End();
+                return;
+            };
+            if (member_.whoSend == "0")
+            {
+                Class1.updateUlastvisit(member_.supplierID, member_.customerID);
+            }
+            MemebersList = Class2.addTomemberList(member_, MemebersList);
+            // populateClassFromDB.addWindowsServiceLogs(new WindowsServiceLogs { DateIn = DateTime.Now, GirlNum = member_.supplierID, RndNumber = member_.RndNumber.ToString(), UserNum = member_.customerID, EventDesc = "supplier Online was not 1 from TestWebSocketHandler 77 disconnectChat17" + member_.memberID, IsError = 1 });
+            Class1.addChatConv(member_.supplierID, message);
+            // populateClassFromDB.addWindowsServiceLogs(new WindowsServiceLogs { DateIn = DateTime.Now, GirlNum = member_.supplierID, RndNumber = member_.RndNumber.ToString(), UserNum = member_.customerID, EventDesc = "supplier Online was not 1 from TestWebSocketHandler 88 disconnectChat17" + member_.memberID, IsError = 1 });
+            //Clients.Client(Context.ConnectionId).newMessage(message);
+            Clients.Client(Context.ConnectionId).SendAsync("sendMessage", message);
+            //Class2.getOtherMember(member_).memberID;
+            //populateClassFromDB.addWindowsServiceLogs(new WindowsServiceLogs { DateIn = DateTime.Now, GirlNum = member_.supplierID, RndNumber = member_.RndNumber.ToString(), UserNum = member_.customerID, EventDesc = "supplier Online was not 1 from TestWebSocketHandler 100 disconnectChat17" + Class2.getOtherMember(member_).memberID, IsError = 1 });
+            //Clients.Client(Class2.getOtherMember(member_, MemebersList).memberID).newMessage(message);
+            Clients.Client(Class2.getOtherMember(member_, MemebersList).memberID).SendAsync("sendMessage", message);
+            // populateClassFromDB.addWindowsServiceLogs(new WindowsServiceLogs { DateIn = DateTime.Now, GirlNum = member_.supplierID, RndNumber = member_.RndNumber.ToString(), UserNum = member_.customerID, EventDesc = "supplier Online was not 1 from TestWebSocketHandler 99 disconnectChat17" + member_.memberID, IsError = 1 });
+
+        }
+        public void offer(string message, string RndNumber, string customerID, string supplierID, string whoSend, string gid, string guid)
+        {
+            errors.WriteErrorLogtmp("offer", 1);
+            member streamData_ = TestWebSocketHandlerMemeberProperties(RndNumber, customerID, supplierID, whoSend, gid, guid);
+            //streamData_.memberID = Context.ConnectionId;
+            //errors.WriteErrorLogtmp("offer-guid" + Class2.getOtherMember(streamData_, MemebersList).guid, 1);
+            Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).SendAsync("sendMessage", message);
+            //Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).newMessage(message);
+        }
+        public void leave(string message, string RndNumber, string customerID, string supplierID, string whoSend, string gid, string guid)
+        {
+            errors.WriteErrorLogtmp("leave", 1);
+            member streamData_ = TestWebSocketHandlerMemeberProperties(RndNumber, customerID, supplierID, whoSend, gid, guid);
+            //streamData_.memberID = Context.ConnectionId;
+            Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).SendAsync("sendMessage", message);
+            //Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).newMessage(message);
+        }
+        public void candidate(string message, string RndNumber, string customerID, string supplierID, string whoSend, string gid, string guid)
+        {
+            try
+            {
+                errors.WriteErrorLogtmp("candidate", 1);
+                member streamData_ = TestWebSocketHandlerMemeberProperties(RndNumber, customerID, supplierID, whoSend, gid, guid);
+                //streamData_.memberID = Context.ConnectionId;
+                Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).SendAsync("sendMessage", message);
+                //Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).newMessage(message);
+            }
+            catch (Exception ex)
+            {
+                errors.WriteErrorLogtmp(ex.StackTrace, 1);
+            }
+
+        }
+        public void answer(string message, string RndNumber, string customerID, string supplierID, string whoSend, string gid, string guid)
+        {
+            try
+            {
+                errors.WriteErrorLogtmp("answer", 1);
+                member streamData_ = TestWebSocketHandlerMemeberProperties(RndNumber, customerID, supplierID, whoSend, gid, guid);
+                //streamData_.memberID = Context.ConnectionId;
+                Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).SendAsync("sendMessage", message);
+                //Clients.Client(Class2.getOtherMember(streamData_, MemebersList).memberID).newMessage(message);
+            }
+            catch (Exception ex)
+            {
+                errors.WriteErrorLogtmp(ex.StackTrace, 1);
+            }
+        }
+        private member TestWebSocketHandlerMemeberProperties(string RndNumber, string customerID, string supplierID, string whoSend, string gid, string guid)
+        {
+            member member_ = new member();
+            member_.RndNumber =Guid.Parse(RndNumber);
+            //member_.name = name;
+            member_.customerID = int.Parse(customerID);
+            member_.supplierID = int.Parse(supplierID);
+            member_.whoSend = whoSend;
+            member_.gid = gid;
+            member_.guid = guid;
+            return member_;
+        }
+
+        public void update(string message,string RndNumber, string customerID, string supplierID, string whoSend,string gid,string guid)
+        {
+            member member_ = TestWebSocketHandlerMemeberProperties(RndNumber,customerID,supplierID,whoSend,gid,guid);
+            member_.memberID = Context.ConnectionId;
+            models models_ = populateClassFromDB.getNewModels(member_.supplierID);
+            if (member_.whoSend == "749")
+            {
+                if (models_.MainModels_.MainModelGuid.ToString() != member_.gid.ToString())
+                {
+                    populateClassFromDB.addWindowsServiceLogs(new WindowsServiceLogs { DateIn = DateTime.Now, GirlNum = member_.supplierID, RndNumber = member_.RndNumber.ToString(), UserNum = member_.customerID, EventDesc = "supplier wrong guid" + member_.supplierID, IsError = 1 });
+                    return;
+                    //HttpContext.Current.Response.End();
+                }
+                if (models_.NewModels_.Online != 1)
+                {
+                    MemebersList = Class2.removeCustomerMemberList(member_, MemebersList);
+                }
+
+                MemebersList = Class2.addTomemberList(member_, MemebersList);
+                string ans = supplierAutoUpdate_.checkSupplierStatus(models_.NewModels_, member_, message);
+                if (ans != "z0z")
+                {
+                    Clients.Client(Context.ConnectionId).SendAsync("sendMessage", ans);
+                    //Clients.Client(Context.ConnectionId).newMessage(ans);
+                    return;
+                    //HttpContext.Current.Response.End();
+                }
+                if (models_.NewModels_.NewTip == 2)
+                {
+                    Clients.Client(Context.ConnectionId).SendAsync("sendMessage", "You got new Tip from this customer");
+                    //Clients.Client(Context.ConnectionId).newMessage("You got new Tip from this customer");
+                    Class1.nonQuerySql("update NewModels set newTip=1 where GirlNum=" + models_.NewModels_.GirlNum);
+                    return;
+                    //HttpContext.Current.Response.End();
+                }
+                // ThreadStaticAttribute.s;l
+                Clients.Client(Context.ConnectionId).SendAsync("sendMessage", "update24a5ff");
+                //Clients.Client(Context.ConnectionId).newMessage("update24a5ff");
+                return;
+                //HttpContext.Current.Response.End();
+
+            }
+            else
+            {
+                if (Validation_.CheckifValidClient(models_.NewModels_, member_) == 1)
+                {
+                    populateClassFromDB.addWindowsServiceLogs(new WindowsServiceLogs { DateIn = DateTime.Now, GirlNum = member_.supplierID, RndNumber = member_.RndNumber.ToString(), UserNum = member_.customerID, EventDesc = "supplier Online was not 1 from TestWebSocketHandler 44 disconnectChat17" + member_.supplierID, IsError = 1 });
+                    //Clients.Client(Context.ConnectionId).newMessage("disconnectChat17");
+                    Clients.Client(Context.ConnectionId).SendAsync("sendMessage", "disconnectChat17");
+                    return;
+                    //HttpContext.Current.Response.End();
+                };
+                MemebersList = Class2.addTomemberList(member_, MemebersList);
+                Class1.updateUlastvisit(member_.supplierID, member_.customerID);
+                if (models_.NewModels_.SumUserTime < 60)
+                {
+                    Clients.Client(Context.ConnectionId).SendAsync("sendMessage", "disconnectChat18");
+                    //Clients.Client(Context.ConnectionId).newMessage("disconnectChat18");
+                    //HttpContext.Current.Response.End();
+                    return;
+                }
+                Clients.Client(Context.ConnectionId).SendAsync("sendMessage", "update75ta33");
+                //Clients.Client(Context.ConnectionId).newMessage("update75ta33");
+                //HttpContext.Current.Response.End();
+                return;
+            }
+
+
+        }
+
+    }
+}
